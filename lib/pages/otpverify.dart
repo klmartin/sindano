@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:SindanoShow/provider/generalprovider.dart';
-import 'package:SindanoShow/pages/bottompage.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/provider/generalprovider.dart';
+import 'package:Sindano/pages/bottompage.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

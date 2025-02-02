@@ -1,5 +1,5 @@
-import 'package:SindanoShow/model/languagemodel.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/languagemodel.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/material.dart';
 
 class LanguageProvider extends ChangeNotifier {

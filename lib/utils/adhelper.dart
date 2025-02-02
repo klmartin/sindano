@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/utils.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';

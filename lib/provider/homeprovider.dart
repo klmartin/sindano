@@ -1,5 +1,5 @@
-import 'package:SindanoShow/model/categorymodel.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/categorymodel.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/material.dart';
 
 class HomeProvider extends ChangeNotifier {

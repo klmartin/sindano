@@ -1,6 +1,6 @@
-import 'package:SindanoShow/model/subscriptionmodel.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/subscriptionmodel.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionProvider extends ChangeNotifier {

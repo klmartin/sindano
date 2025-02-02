@@ -1,4 +1,4 @@
-import 'package:SindanoShow/model/successmodel.dart';
+import 'package:Sindano/model/successmodel.dart';
 import 'package:flutter/material.dart';
 
 class PlayerProvider extends ChangeNotifier {

@@ -1,6 +1,6 @@
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:flutter/material.dart';
 
 class NoData extends StatelessWidget {

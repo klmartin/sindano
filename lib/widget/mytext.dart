@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:SindanoShow/utils/constant.dart';
+import 'package:Sindano/utils/constant.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';

@@ -1,15 +1,16 @@
 import 'dart:async';
 
-import 'package:SindanoShow/model/subscriptionmodel.dart';
-import 'package:SindanoShow/subscription/allpayment.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/dimens.dart';
-import 'package:SindanoShow/widget/nodata.dart';
-import 'package:SindanoShow/provider/subscriptionprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
-import 'package:SindanoShow/utils/utils.dart';
+import 'package:Sindano/model/subscriptionmodel.dart';
+import 'package:Sindano/provider/userstatusprovider.dart';
+import 'package:Sindano/subscription/allpayment.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/dimens.dart';
+import 'package:Sindano/widget/nodata.dart';
+import 'package:Sindano/provider/subscriptionprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
+import 'package:Sindano/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +27,17 @@ class Subscription extends StatefulWidget {
 
 class SubscriptionState extends State<Subscription> {
   late SubscriptionProvider subscriptionProvider;
+  late UserStatusProvider userStatusProvider;
+
 
   @override
   void initState() {
     subscriptionProvider =
         Provider.of<SubscriptionProvider>(context, listen: false);
+         userStatusProvider =
+        Provider.of<UserStatusProvider>(context, listen: false);
+           userStatusProvider.checkUserStatus2();
+
     super.initState();
     _getData();
   }
@@ -424,7 +431,7 @@ class SubscriptionState extends State<Subscription> {
                         1),
                     child: InkWell(
                       onTap: () async {
-                        debugPrint("Clicked on index =======> $index");
+                        debugPrint("Clicked on index hapa =======> $index");
                         if (subscriptionProvider.purchasePos == -1) {
                           _checkAndPay(
                               subscriptionProvider.subscriptionModel.result,

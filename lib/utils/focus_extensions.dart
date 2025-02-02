@@ -1,4 +1,4 @@
-import 'package:SindanoShow/webwidget/translate_on_focus.dart';
+import 'package:Sindano/webwidget/translate_on_focus.dart';
 import 'package:flutter/material.dart';
 
 extension FocusExtensions on Widget {

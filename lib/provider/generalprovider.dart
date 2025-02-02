@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:SindanoShow/model/generalsettingmodel.dart';
-import 'package:SindanoShow/model/loginmodel.dart';
-import 'package:SindanoShow/model/pagesmodel.dart';
-import 'package:SindanoShow/model/sociallinkmodel.dart';
-import 'package:SindanoShow/utils/adhelper.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/generalsettingmodel.dart';
+import 'package:Sindano/model/loginmodel.dart';
+import 'package:Sindano/model/pagesmodel.dart';
+import 'package:Sindano/model/sociallinkmodel.dart';
+import 'package:Sindano/utils/adhelper.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +68,7 @@ class GeneralProvider extends ChangeNotifier {
   }
 
   Future<void> loginWithSocial(
-      email, name, type, deviceToken, File? profileImg) async {
+      email, name, type, deviceToken, File? profileImg,firebaseId) async {
     debugPrint("loginWithSocial email       :==> $email");
     debugPrint("loginWithSocial name        :==> $name");
     debugPrint("loginWithSocial type        :==> $type");
@@ -76,7 +76,7 @@ class GeneralProvider extends ChangeNotifier {
     debugPrint("loginWithSocial profileImg  :==> ${profileImg?.path}");
 
     loading = true;
-    loginSocialModel = await ApiService().login(email, name, type, deviceToken);
+    loginSocialModel = await ApiService().login(email, name, type, deviceToken,firebaseId);
     debugPrint("loginWithSocial status  :==> ${loginSocialModel.status}");
     debugPrint("loginWithSocial message :==> ${loginSocialModel.message}");
     loading = false;

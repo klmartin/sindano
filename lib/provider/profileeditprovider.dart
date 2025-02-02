@@ -1,7 +1,7 @@
-import 'package:SindanoShow/model/profilemodel.dart';
-import 'package:SindanoShow/model/successmodel.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/profilemodel.dart';
+import 'package:Sindano/model/successmodel.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/material.dart';
 
 class ProfileEditProvider extends ChangeNotifier {

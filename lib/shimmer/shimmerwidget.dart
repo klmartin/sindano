@@ -1,4 +1,4 @@
-import 'package:SindanoShow/utils/color.dart';
+import 'package:Sindano/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 

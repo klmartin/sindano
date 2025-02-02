@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:SindanoShow/pages/bottompage.dart';
-import 'package:SindanoShow/provider/newsdetailsprovider.dart';
-import 'package:SindanoShow/provider/paymentprovider.dart';
-import 'package:SindanoShow/provider/profileprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/strings.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
-import 'package:SindanoShow/widget/nodata.dart';
+import 'package:Sindano/pages/bottompage.dart';
+import 'package:Sindano/provider/newsdetailsprovider.dart';
+import 'package:Sindano/provider/paymentprovider.dart';
+import 'package:Sindano/provider/profileprovider.dart';
+import 'package:Sindano/provider/userstatusprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/strings.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
+import 'package:Sindano/widget/nodata.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,7 @@ import 'package:paytm_allinonesdk/paytm_allinonesdk.dart';
 import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_web/razorpay_web.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../widget/showPhoneNumberModal.dart';
 
 class AllPayment extends StatefulWidget {
@@ -60,6 +61,19 @@ class AllPaymentState extends State<AllPayment> {
 
   @override
   void initState() {
+
+    paymentProvider =Provider.of<PaymentProvider>(context, listen: false);
+    paymentProvider.addListener(() {
+      if (paymentProvider.payed == true) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const Bottompage()), // Your target page
+          );
+        });
+      }
+    });
     prDialog = ProgressDialog(context);
     _getData();
     super.initState();
@@ -137,14 +151,15 @@ class AllPaymentState extends State<AllPayment> {
 
   openPayment({required String pgName}) async {
     debugPrint("finalAmount =============> ${paymentProvider.finalAmount}");
-
+    User? user = FirebaseAuth.instance.currentUser;
     if (paymentProvider.finalAmount != "0") {
       if (pgName == "paypal") {
         _paypalInit();
       } else if (pgName == "razorpay") {
         _initializeRazorpay();
       } else if (pgName == "flutterwave") {
-        showPhoneNumberModal(context,paymentProvider.finalAmount);
+        showPhoneNumberModal(
+            context, paymentProvider.finalAmount, widget.itemId, user?.uid);
       } else if (pgName == "payumoney") {
       } else if (pgName == "paytm") {
         debugPrint("pgName2 =============> $pgName");
@@ -455,7 +470,6 @@ class AllPaymentState extends State<AllPayment> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () async {
-
                           await paymentProvider
                               .setCurrentPayment("flutterwave");
                           openPayment(pgName: "flutterwave");

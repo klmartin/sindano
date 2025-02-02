@@ -1,9 +1,9 @@
 import 'package:chewie/chewie.dart';
-import 'package:SindanoShow/provider/playerprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/provider/playerprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

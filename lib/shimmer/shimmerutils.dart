@@ -1,9 +1,9 @@
 import 'package:carousel_indicator/carousel_indicator.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/dimens.dart';
-import 'package:SindanoShow/shimmer/shimmerwidget.dart';
-import 'package:SindanoShow/utils/utils.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/dimens.dart';
+import 'package:Sindano/shimmer/shimmerwidget.dart';
+import 'package:Sindano/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

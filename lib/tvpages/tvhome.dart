@@ -1,26 +1,27 @@
 import 'dart:async';
+import 'package:Sindano/provider/userstatusprovider.dart';
+import 'package:Sindano/subscription/subscription.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:SindanoShow/provider/generalprovider.dart';
-import 'package:SindanoShow/provider/homesectionprovider.dart';
-import 'package:SindanoShow/provider/languageprovider.dart';
-import 'package:SindanoShow/provider/languagesectionprovider.dart';
-import 'package:SindanoShow/shimmer/shimmerutils.dart';
-import 'package:SindanoShow/tvpages/tvlanguagesection.dart';
-import 'package:SindanoShow/tvpages/tvviewall.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-
-import 'package:SindanoShow/model/categorymodel.dart' as type;
-import 'package:SindanoShow/model/bannermodel.dart' as banner;
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/dimens.dart';
-import 'package:SindanoShow/provider/homeprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/webwidget/footerweb.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/mynetworkimg.dart';
+import 'package:Sindano/provider/generalprovider.dart';
+import 'package:Sindano/provider/homesectionprovider.dart';
+import 'package:Sindano/provider/languageprovider.dart';
+import 'package:Sindano/provider/languagesectionprovider.dart';
+import 'package:Sindano/shimmer/shimmerutils.dart';
+import 'package:Sindano/tvpages/tvlanguagesection.dart';
+import 'package:Sindano/tvpages/tvviewall.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/model/categorymodel.dart' as type;
+import 'package:Sindano/model/bannermodel.dart' as banner;
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/dimens.dart';
+import 'package:Sindano/provider/homeprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/webwidget/footerweb.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/mynetworkimg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -229,6 +230,8 @@ class TVHomeState extends State<TVHome> {
 
   @override
   Widget build(BuildContext context) {
+
+ 
     return Scaffold(
       backgroundColor: appBgColor,
       floatingActionButton: FloatingActionButton.small(

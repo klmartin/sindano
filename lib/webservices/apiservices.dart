@@ -1,22 +1,22 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:SindanoShow/model/bannermodel.dart';
-import 'package:SindanoShow/model/categorymodel.dart';
-import 'package:SindanoShow/model/generalsettingmodel.dart';
-import 'package:SindanoShow/model/languagemodel.dart';
-import 'package:SindanoShow/model/loginmodel.dart';
-import 'package:SindanoShow/model/newsdetailsmodel.dart';
-import 'package:SindanoShow/model/newsmodel.dart';
-import 'package:SindanoShow/model/notificationmodel.dart';
-import 'package:SindanoShow/model/pagesmodel.dart';
-import 'package:SindanoShow/model/paymentoptionmodel.dart';
-import 'package:SindanoShow/model/paytmmodel.dart';
-import 'package:SindanoShow/model/profilemodel.dart';
-import 'package:SindanoShow/model/searchmodel.dart';
-import 'package:SindanoShow/model/sociallinkmodel.dart';
-import 'package:SindanoShow/model/subscriptionmodel.dart';
-import 'package:SindanoShow/model/successmodel.dart';
-import 'package:SindanoShow/utils/constant.dart';
+import 'package:Sindano/model/bannermodel.dart';
+import 'package:Sindano/model/categorymodel.dart';
+import 'package:Sindano/model/generalsettingmodel.dart';
+import 'package:Sindano/model/languagemodel.dart';
+import 'package:Sindano/model/loginmodel.dart';
+import 'package:Sindano/model/newsdetailsmodel.dart';
+import 'package:Sindano/model/newsmodel.dart';
+import 'package:Sindano/model/notificationmodel.dart';
+import 'package:Sindano/model/pagesmodel.dart';
+import 'package:Sindano/model/paymentoptionmodel.dart';
+import 'package:Sindano/model/paytmmodel.dart';
+import 'package:Sindano/model/profilemodel.dart';
+import 'package:Sindano/model/searchmodel.dart';
+import 'package:Sindano/model/sociallinkmodel.dart';
+import 'package:Sindano/model/subscriptionmodel.dart';
+import 'package:Sindano/model/successmodel.dart';
+import 'package:Sindano/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -71,8 +71,8 @@ class ApiService {
   }
 
   /* type => 1=OTP, 2=Google, 3=Apple, 4=Normal */
-  Future<LoginModel> login(
-      String email, String name, String type, String deviceToken) async {
+  Future<LoginModel> login(String email, String name, String type,
+      String deviceToken, String firebaseId) async {
     LoginModel responseModel;
     String apiName = "login";
     Response response = await dio.post(
@@ -81,6 +81,7 @@ class ApiService {
         "email": email,
         "type": type,
         "device_token": deviceToken,
+        "firebase_id": firebaseId
       }),
     );
     responseModel = LoginModel.fromJson((response.data));
@@ -429,9 +430,11 @@ class ApiService {
     return successModel;
   }
 
-  Future<void> makePayment(String userId, String amount, String phoneNumber) async {
+  Future<Map<String, dynamic>> makePayment(
+      String userId, String amount, String phoneNumber, String itemId) async {
     print("make payment begin");
-    const String apiUrl = 'https://www.sindanoshow.com/public/api/payments/flutterwave';
+    const String apiUrl =
+        'https://www.sindanoshow.com/public/api/payments/flutterwave';
     // Create Dio instance
     Dio dio = Dio();
     try {
@@ -440,6 +443,7 @@ class ApiService {
         'user_id': userId,
         'amount': amount,
         'phone_number': phoneNumber,
+        'item_id': itemId
       };
       // Send POST request
       Response response = await dio.post(
@@ -454,28 +458,57 @@ class ApiService {
       );
       print(response);
       print("make payment response");
-      // Handle response
       if (response.statusCode == 200) {
         final responseData = response.data;
         if (responseData['status'] == 200) {
           final paymentData = responseData['response']['data'];
-          print('Payment Success: ${paymentData['message']}');
+          print('Payment Success: ${responseData['response']['message']}');
           print('Transaction Reference: ${paymentData['tx_ref']}');
+          print('Transaction id: ${paymentData['id']}');
+          return paymentData;
         } else {
           print('Payment Failed: ${responseData['response']['message']}');
+          return {};
         }
       } else {
         print('Server Error: ${response.statusCode}');
+        return {};
       }
     } on DioError catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.statusCode} ${e.response?.data}');
+        return {};
       } else {
-        print('Error: ${e.message}');
+        return {};
       }
     } catch (e) {
-      print('Unexpected Error: $e');
+      return {};
     }
   }
+
+  Future<bool> getPaymentStatus(String transactionId) async {
+    Dio dio = Dio();
+    try {
+      String apiUrl ='https://www.sindanoshow.com/public/api/getPaymentStatus/$transactionId';
+
+      final response = await dio.get(
+        apiUrl,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final status = response.data; // Dio automatically decodes JSON
+        return status['status'];
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
+
 
 }

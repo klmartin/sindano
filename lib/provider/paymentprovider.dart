@@ -1,17 +1,30 @@
+import 'dart:async';
 import 'dart:developer';
 
-import 'package:SindanoShow/model/paymentoptionmodel.dart';
-import 'package:SindanoShow/model/paytmmodel.dart';
-import 'package:SindanoShow/model/successmodel.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/paymentoptionmodel.dart';
+import 'package:Sindano/model/paytmmodel.dart';
+import 'package:Sindano/model/successmodel.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/material.dart';
 
 class PaymentProvider extends ChangeNotifier {
   PaymentOptionModel paymentOptionModel = PaymentOptionModel();
   PayTmModel payTmModel = PayTmModel();
   SuccessModel successModel = SuccessModel();
-
+  bool _isPaying = false;
+  bool _payed = false;
+  bool _isFinishPaying = false;
+  bool _paymentCanceled = false;
+  String _payedPost = '';
+  String _payingText = 'Processing Payment...';
+  bool get isPaying => _isPaying;
+  bool get isFinishPaying => _isFinishPaying;
+  bool get payed => _payed;
+  String get payingText => _payingText;
+  String get payedPost => _payedPost;
+  bool get paymentCanceled => _paymentCanceled;
+  Timer? _processingStatusTimer;
   bool loading = false, payLoading = false, couponLoading = false;
   String? currentPayment = "", finalAmount = "";
 
@@ -68,11 +81,60 @@ class PaymentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> _fetchPaymentStatus(String transactionId) async {
+    var status = await ApiService().getPaymentStatus(transactionId);
+
+    print(status);
+
+    print("payment status fetched is .........$status");
+    if (status == true) {
+      _payed = true;
+      _processingStatusTimer?.cancel();
+      notifyListeners();
+    }
+    if (_paymentCanceled == true) {
+      _isFinishPaying = true;
+      _isPaying = false;
+      _processingStatusTimer?.cancel();
+      notifyListeners();
+    }
+    return status;
+  }
+
+  Future<void> startPaying(phoneNumber, amount, itemId, userId) async {
+    _isPaying = true;
+    _payedPost = itemId.toString();
+    notifyListeners();
+    Map<String, dynamic> pay =  await ApiService().makePayment(userId, amount, phoneNumber, itemId);
+    print("pay is complete..... $pay");
+    if (pay.isNotEmpty) {
+      var transactionId = pay['id'];
+      print("transactions id in provider is.. $transactionId");
+      print(transactionId);
+      print('transId');
+      _isPaying = false;
+      notifyListeners();
+      _processingStatusTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+        _fetchPaymentStatus(transactionId.toString());
+        notifyListeners();
+      });
+    } else {
+      _isPaying = false;
+      notifyListeners();
+    }
+  }
+
   clearProvider() {
     log("<================ clearProvider ================>");
     currentPayment = "";
     finalAmount = "";
     paymentOptionModel = PaymentOptionModel();
     successModel = SuccessModel();
+  }
+
+  set paymentCanceled(bool value) {
+    _paymentCanceled = value;
+    _isPaying = false;
+    notifyListeners();
   }
 }

@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Sindano/provider/userstatusprovider.dart';
+import 'package:Sindano/subscription/subscription.dart';
 import 'package:crypto/crypto.dart';
-import 'package:SindanoShow/provider/generalprovider.dart';
-import 'package:SindanoShow/pages/otpverify.dart';
-import 'package:SindanoShow/pages/bottompage.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/strings.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/provider/generalprovider.dart';
+import 'package:Sindano/pages/otpverify.dart';
+import 'package:Sindano/pages/bottompage.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/strings.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   late ProgressDialog prDialog;
   late GeneralProvider generalProvider;
+  late UserStatusProvider userStatusProvider;
   File? mProfileImg;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String userEmail = "";
@@ -49,6 +52,9 @@ class _LoginState extends State<Login> {
   void initState() {
     prDialog = ProgressDialog(context);
     generalProvider = Provider.of<GeneralProvider>(context, listen: false);
+    userStatusProvider =
+        Provider.of<UserStatusProvider>(context, listen: false);
+    userStatusProvider.checkUserStatus2();
     super.initState();
     _getData();
     _getDeviceToken();
@@ -405,7 +411,7 @@ class _LoginState extends State<Login> {
           await Utils.saveImageInStorage(userCredential.user?.photoURL ?? "");
       debugPrint('mProfileImg :===> $mProfileImg');
 
-      checkAndNavigate(user.email, user.displayName ?? "", "2");
+      checkAndNavigate(user.email, user.displayName ?? "", "2", firebasedid);
     } on FirebaseAuthException catch (e) {
       debugPrint('===>Exp${e.code.toString()}');
       debugPrint('===>Exp${e.message.toString()}');
@@ -431,10 +437,6 @@ class _LoginState extends State<Login> {
   }
 
   Future<User?> signInWithApple() async {
-    // To prevent replay attacks with the credential returned from Apple, we
-    // include a nonce in the credential request. When signing in in with
-    // Firebase, the nonce in the id token returned by Apple, is expected to
-    // match the sha256 hash of `rawNonce`.
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
@@ -486,14 +488,15 @@ class _LoginState extends State<Login> {
       debugPrint("firebasedId ===FINAL==> $firebasedId");
       debugPrint("displayName ===FINAL==> $displayName");
 
-      checkAndNavigate(userEmail, displayName ?? "", "3");
+      checkAndNavigate(userEmail, displayName ?? "", "3", firebasedId);
     } catch (exception) {
       debugPrint("Apple Login exception =====> $exception");
     }
     return null;
   }
 
-  checkAndNavigate(String mail, String displayName, String type) async {
+  checkAndNavigate(
+      String mail, String displayName, String type, String firebaseId) async {
     email = mail;
     userName = displayName;
     strType = type;
@@ -501,13 +504,16 @@ class _LoginState extends State<Login> {
     debugPrint('checkAndNavigate userName ==>> $userName');
     debugPrint('checkAndNavigate strType ==>> $strType');
     debugPrint('checkAndNavigate mProfileImg :===> $mProfileImg');
+    debugPrint('checkAndNavigate firebaseId :===> $firebaseId');
     if (!prDialog.isShowing()) {
       Utils.showProgress(context, prDialog);
     }
     final generalProvider =
         Provider.of<GeneralProvider>(context, listen: false);
+    final userStatusProvider =
+        Provider.of<UserStatusProvider>(context, listen: false);
     await generalProvider.loginWithSocial(
-        email, userName, strType, strDeviceToken, mProfileImg);
+        email, userName, strType, strDeviceToken, mProfileImg, firebaseId);
     debugPrint('checkAndNavigate loading ==>> ${generalProvider.loading}');
 
     if (!generalProvider.loading) {
@@ -540,12 +546,23 @@ class _LoginState extends State<Login> {
         // Hide Progress Dialog
         await prDialog.hide();
         if (!mounted) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const Bottompage()),
-          (Route<dynamic> route) => false,
-        );
+        if (userStatusProvider.hasSubscription!) {
+          debugPrint(
+              'User has an active subscription login. Navigating to BottomPage.');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const Bottompage()),
+            (Route<dynamic> route) => false,
+          );
+        } else {
+          debugPrint(
+              'User does NOT have an active subscription login. Navigating to SubscriptionPage.');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const Subscription()),
+            (Route<dynamic> route) => false,
+          );
+        }
       } else {
         // Hide Progress Dialog
         await prDialog.hide();

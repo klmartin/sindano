@@ -1,4 +1,4 @@
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:flutter/material.dart';
 
 class InteractiveText extends StatefulWidget {

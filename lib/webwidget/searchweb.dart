@@ -1,11 +1,11 @@
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/nodata.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/nodata.dart';
 import 'package:flutter/material.dart';
 
-import 'package:SindanoShow/provider/searchprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/dimens.dart';
-import 'package:SindanoShow/widget/mynetworkimg.dart';
+import 'package:Sindano/provider/searchprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/dimens.dart';
+import 'package:Sindano/widget/mynetworkimg.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 

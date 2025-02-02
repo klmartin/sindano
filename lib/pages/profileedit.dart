@@ -1,20 +1,20 @@
 import 'dart:io';
 
-import 'package:SindanoShow/provider/profileeditprovider.dart';
-import 'package:SindanoShow/provider/profileprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/dimens.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
-import 'package:SindanoShow/widget/myusernetworkimg.dart';
+import 'package:Sindano/provider/profileeditprovider.dart';
+import 'package:Sindano/provider/profileprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/dimens.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
+import 'package:Sindano/widget/myusernetworkimg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:SindanoShow/widget/nodata.dart';
+import 'package:Sindano/widget/nodata.dart';
 import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 import 'package:provider/provider.dart';
 

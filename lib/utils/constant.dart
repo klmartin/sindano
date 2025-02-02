@@ -2,7 +2,7 @@ class Constant {
   final String baseurl = 'https://www.sindanoshow.com/public/api/';
 
   static String appName = "Sindano Show";
-  static String appPackageName = "com.sindano.sindanoshow";
+  static String appPackageName = "com.sindano.sindano";
   static String appleAppId = "6463490785";
 
   /* OneSignal App ID */

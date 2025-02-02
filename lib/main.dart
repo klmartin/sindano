@@ -1,45 +1,54 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:Sindano/pages/bottompage.dart';
+import 'package:Sindano/pages/login.dart';
+import 'package:Sindano/provider/userstatusprovider.dart';
+import 'package:Sindano/subscription/subscription.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:SindanoShow/provider/bookmarkprovider.dart';
-import 'package:SindanoShow/provider/bottomprovider.dart';
-import 'package:SindanoShow/provider/generalprovider.dart';
-import 'package:SindanoShow/provider/homeprovider.dart';
-import 'package:SindanoShow/provider/homesectionprovider.dart';
-import 'package:SindanoShow/provider/languageprovider.dart';
-import 'package:SindanoShow/provider/languagesectionprovider.dart';
-import 'package:SindanoShow/provider/newsdetailsprovider.dart';
-import 'package:SindanoShow/provider/notificationprovider.dart';
-import 'package:SindanoShow/provider/paymentprovider.dart';
-import 'package:SindanoShow/provider/playerprovider.dart';
-import 'package:SindanoShow/provider/profileeditprovider.dart';
-import 'package:SindanoShow/provider/searchprovider.dart';
-import 'package:SindanoShow/provider/profileprovider.dart';
-import 'package:SindanoShow/provider/subscriptionprovider.dart';
-import 'package:SindanoShow/provider/videoprovider.dart';
-import 'package:SindanoShow/provider/viewallprovider.dart';
-import 'package:SindanoShow/pages/splash.dart';
-import 'package:SindanoShow/tvpages/tvhome.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
+import 'package:Sindano/provider/bookmarkprovider.dart';
+import 'package:Sindano/provider/bottomprovider.dart';
+import 'package:Sindano/provider/generalprovider.dart';
+import 'package:Sindano/provider/homeprovider.dart';
+import 'package:Sindano/provider/homesectionprovider.dart';
+import 'package:Sindano/provider/languageprovider.dart';
+import 'package:Sindano/provider/languagesectionprovider.dart';
+import 'package:Sindano/provider/newsdetailsprovider.dart';
+import 'package:Sindano/provider/notificationprovider.dart';
+import 'package:Sindano/provider/paymentprovider.dart';
+import 'package:Sindano/provider/playerprovider.dart';
+import 'package:Sindano/provider/profileeditprovider.dart';
+import 'package:Sindano/provider/searchprovider.dart';
+import 'package:Sindano/provider/profileprovider.dart';
+import 'package:Sindano/provider/subscriptionprovider.dart';
+import 'package:Sindano/provider/videoprovider.dart';
+import 'package:Sindano/provider/viewallprovider.dart';
+import 'package:Sindano/pages/splash.dart';
+import 'package:Sindano/tvpages/tvhome.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Locales.init(['en', 'ar', 'hi', 'zh']);
+              print('stats from main.dart 1');
 
   if (!kIsWeb) {
     await MobileAds.instance.initialize();
     OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+
     // Initialize OneSignal
     OneSignal.initialize(Constant.oneSignalAppId);
     OneSignal.Notifications.requestPermission(true);
@@ -72,6 +81,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => NewsDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => UserStatusProvider()), // Add this
       ],
       child: const MyApp(),
     ),
@@ -97,91 +107,72 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // if (!kIsWeb) Utils.enableScreenCapture();
+    super.initState();
     if (!kIsWeb) _getDeviceInfo();
-
     if (!kIsWeb) {
       OneSignal.Notifications.addForegroundWillDisplayListener(
           _handleForgroundNotification);
     }
-    super.initState();
-  }
+                  print('stats from main.dart2');
 
-  _handleForgroundNotification(OSNotificationWillDisplayEvent event) async {
-    /// preventDefault to not display the notification
-    event.preventDefault();
-
-    /// Do async work
-    /// notification.display() to display after preventing default
-    event.notification.display();
-
-    /* Get Notification */
-    final notificationProvider =
-        Provider.of<NotificationProvider>(context, listen: false);
-    notificationProvider.getAllNotification();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Shortcuts(
-      shortcuts: <LogicalKeySet, Intent>{
-        LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
-        LogicalKeySet(LogicalKeyboardKey.enter): const ActivateIntent(),
-      },
-      child: LocaleBuilder(
-        builder: (locale) => MaterialApp(
-          navigatorKey: navigatorKey,
-          debugShowCheckedModeBanner: false,
-          navigatorObservers: [routeObserver], //HERE
-          theme: ThemeData(
-            primaryColor: colorPrimary,
-            primaryColorDark: colorPrimaryDark,
-            primaryColorLight: colorPrimary,
-            scaffoldBackgroundColor: appBgColor,
-          ).copyWith(
-            scrollbarTheme: const ScrollbarThemeData().copyWith(
-              thumbColor: MaterialStateProperty.all(white),
-              trackVisibility: MaterialStateProperty.all(true),
-              trackColor: MaterialStateProperty.all(whiteTransparent),
-            ),
-          ),
-          title: Constant.appName,
-          localizationsDelegates: Locales.delegates,
-          supportedLocales: Locales.supportedLocales,
-          locale: locale,
-          localeResolutionCallback:
-              (Locale? locale, Iterable<Locale> supportedLocales) {
-            return locale;
-          },
-          builder: (context, child) {
-            return ResponsiveBreakpoints.builder(
-              child: child!,
-              breakpoints: [
-                const Breakpoint(start: 0, end: 360, name: MOBILE),
-                const Breakpoint(start: 361, end: 800, name: TABLET),
-                const Breakpoint(start: 801, end: 1000, name: DESKTOP),
-                const Breakpoint(start: 1001, end: double.infinity, name: '4K'),
-              ],
-            );
-          },
-          home: (kIsWeb) ? const TVHome(pageName: "") : const Splash(),
-          scrollBehavior: const MaterialScrollBehavior().copyWith(
-            dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-              PointerDeviceKind.stylus,
-              PointerDeviceKind.unknown,
-              PointerDeviceKind.trackpad
-            },
-          ),
-        ),
+    final userProvider =
+        Provider.of<UserStatusProvider>(context, listen: false);
+              print('stats from main.dart3');
+
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: Locales.delegates,
+      supportedLocales: Locales.supportedLocales,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: FutureBuilder<Map<String, dynamic>?>(
+        future: userProvider.checkUserStatus2(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: Splash());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            Map<String, dynamic>? userData = snapshot.data;
+            if (userData == null || userData.isEmpty) {
+              return const Login();
+            } else {
+              bool isAuthenticated = userData['isAuthenticated'] ?? false;
+              bool hasSubscription = userData['hasSubscription'] ?? false;
+              print(isAuthenticated);
+              print(hasSubscription);
+              print('stats from main.dart');
+              if (isAuthenticated) {
+                if (hasSubscription) {
+                  print('stats from TvHomemain.dart');
+                  return const Bottompage();
+                } else {
+                  return const Subscription();
+                }
+              } else {
+                return const Login();
+              }
+            }
+          }
+        },
       ),
     );
+  }
+
+  _handleForgroundNotification(OSNotificationWillDisplayEvent event) async {
+    event.preventDefault();
+    event.notification.display();
+
+    final notificationProvider =
+        Provider.of<NotificationProvider>(context, listen: false);
+    notificationProvider.getAllNotification();
   }
 
   _getDeviceInfo() async {

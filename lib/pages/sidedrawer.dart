@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:SindanoShow/provider/bottomprovider.dart';
-import 'package:SindanoShow/provider/generalprovider.dart';
-import 'package:SindanoShow/pages/aboutprivacyterms.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mynetworkimg.dart';
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/provider/bottomprovider.dart';
+import 'package:Sindano/provider/generalprovider.dart';
+import 'package:Sindano/pages/aboutprivacyterms.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mynetworkimg.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';

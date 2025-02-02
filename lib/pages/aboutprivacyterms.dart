@@ -1,6 +1,6 @@
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/sharedpre.dart';
-import 'package:SindanoShow/utils/utils.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/sharedpre.dart';
+import 'package:Sindano/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';

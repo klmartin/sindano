@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:SindanoShow/provider/generalprovider.dart';
-import 'package:SindanoShow/provider/homeprovider.dart';
-import 'package:SindanoShow/utils/color.dart';
-import 'package:SindanoShow/utils/constant.dart';
-import 'package:SindanoShow/utils/strings.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
-import 'package:SindanoShow/widget/mytext.dart';
+import 'package:Sindano/provider/generalprovider.dart';
+import 'package:Sindano/provider/homeprovider.dart';
+import 'package:Sindano/utils/color.dart';
+import 'package:Sindano/utils/constant.dart';
+import 'package:Sindano/utils/strings.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
+import 'package:Sindano/widget/mytext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -323,7 +323,7 @@ class _LoginSocialWebState extends State<LoginSocialWeb> {
           await Utils.saveImageInStorage(userCredential.user?.photoURL ?? "");
       debugPrint('mProfileImg :===> $mProfileImg');
 
-      checkAndNavigate(user.email, user.displayName ?? "", "2");
+      checkAndNavigate(user.email, user.displayName ?? "", "2",firebasedid);
     } on FirebaseAuthException catch (e) {
       debugPrint('===>Exp${e.code.toString()}');
       debugPrint('===>Exp${e.message.toString()}');
@@ -336,7 +336,7 @@ class _LoginSocialWebState extends State<LoginSocialWeb> {
     }
   }
 
-  void checkAndNavigate(String mail, String displayName, String type) async {
+  void checkAndNavigate(String mail, String displayName, String type,String firebaseId) async {
     email = mail;
     userName = displayName;
     strType = type;
@@ -348,7 +348,7 @@ class _LoginSocialWebState extends State<LoginSocialWeb> {
     final generalProvider =
         Provider.of<GeneralProvider>(context, listen: false);
     await generalProvider.loginWithSocial(
-        email, userName, strType, strType, mProfileImg);
+        email, userName, strType, strType, mProfileImg,firebaseId);
     debugPrint('checkAndNavigate loading ==>> ${generalProvider.loading}');
 
     if (!generalProvider.loading) {

@@ -7,49 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:433670815107:android:5f412d8bd361e0528e0ab6",
+        "mobilesdk_app_id": "1:433670815107:android:890d4bc1129f15478e0ab6",
         "android_client_info": {
-          "package_name": "com.sindano.sindanoshow"
+          "package_name": "com.sindano.sindano"
         }
       },
       "oauth_client": [
         {
-          "client_id": "433670815107-7l2ks64u4csah7v9tpt88ohe0veo0rp8.apps.googleusercontent.com",
+          "client_id": "433670815107-pi5clllodft6anfvfq212joi5t3tp2h9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.sindano.sindanoshow",
-            "certificate_hash": "7c85b808e768df270c159146551041521f952044"
+            "package_name": "com.sindano.sindano",
+            "certificate_hash": "db175cff4e88ac00ee196c22529c99c99e37d52b"
           }
         },
-        {
-          "client_id": "433670815107-f9p65c84r2dp4n4h4f8vnbennvmgmf0c.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD3z2msgxwesIgMPkC_v3BBITq4fzQbjlY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "433670815107-f9p65c84r2dp4n4h4f8vnbennvmgmf0c.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:433670815107:android:da872cf66b4d917a8e0ab6",
-        "android_client_info": {
-          "package_name": "com.sindanoshow.sindano"
-        }
-      },
-      "oauth_client": [
         {
           "client_id": "433670815107-f9p65c84r2dp4n4h4f8vnbennvmgmf0c.apps.googleusercontent.com",
           "client_type": 3

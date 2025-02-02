@@ -1,5 +1,5 @@
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/widget/myimage.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/widget/myimage.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable

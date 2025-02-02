@@ -1,7 +1,7 @@
-import 'package:SindanoShow/model/newsmodel.dart';
-import 'package:SindanoShow/model/successmodel.dart';
-import 'package:SindanoShow/utils/utils.dart';
-import 'package:SindanoShow/webservices/apiservices.dart';
+import 'package:Sindano/model/newsmodel.dart';
+import 'package:Sindano/model/successmodel.dart';
+import 'package:Sindano/utils/utils.dart';
+import 'package:Sindano/webservices/apiservices.dart';
 import 'package:flutter/material.dart';
 
 class ViewAllProvider extends ChangeNotifier {
